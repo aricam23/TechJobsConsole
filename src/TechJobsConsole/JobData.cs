@@ -138,5 +138,27 @@ namespace TechJobsConsole
 
             return rowValues.ToArray();
         }
+
+        //FindByData uses dictionaries to iterate over job_data, making it possible for the user to search every field
+        //It also contains a check for duplicate job listings
+        public static List<Dictionary<string, string>> FindbyValue(string searchTerm)
+        {
+            LoadData();
+
+            List<Dictionary<string, string>> jobSearch = new List<Dictionary<string, string>>();
+
+            foreach (Dictionary<string, string> row in AllJobs)
+                foreach (KeyValuePair<string, string> kvp in row)
+                {
+                    string aValue = kvp.Value.ToUpper();
+
+                    if (aValue.Contains(searchTerm))
+                    {
+                        jobSearch.Add(row);
+                        break;
+                    }
+                }
+            return jobSearch;
+        }
     }
 }

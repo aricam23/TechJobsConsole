@@ -57,19 +57,24 @@ namespace TechJobsConsole
                     // What is their search term?
                     Console.WriteLine("\nSearch term: ");
                     string searchTerm = Console.ReadLine();
-
+                    string upperSearchTerm = searchTerm.ToUpper();
                     List<Dictionary<string, string>> searchResults;
+
 
                     // Fetch results
                     if (columnChoice.Equals("all"))
+                        //if the user wants to search in all fields
                     {
-                        Console.WriteLine("Search all fields not yet implemented.");
-                    }
-                    else
-                    {
-                        searchResults = JobData.FindByColumnAndValue(columnChoice, searchTerm);
+                        searchResults = JobData.FindbyValue(upperSearchTerm);
                         PrintJobs(searchResults);
                     }
+                    else
+                        //if the user wants to search individual columns
+                    {
+                        searchResults = JobData.FindByColumnAndValue(columnChoice, upperSearchTerm);
+                        PrintJobs(searchResults);
+                    }              
+                   
                 }
             }
         }
@@ -116,9 +121,29 @@ namespace TechJobsConsole
             return choiceKeys[choiceIdx];
         }
 
+        //this will iterate through a list of dictionaries containing the name of the column and the data in each column, for the "list by" portion
         private static void PrintJobs(List<Dictionary<string, string>> someJobs)
         {
-            Console.WriteLine("printJobs is not implemented yet");
+            if (someJobs.Count == 0)
+            { Console.WriteLine("No results found."); }
+            else
+            {
+                for (int i = 0; i < someJobs.Count; i++)
+                {
+                    foreach (KeyValuePair<string, string> pair in someJobs[i])
+
+
+                    {
+
+                        Console.WriteLine("{0}: {1}", pair.Key, pair.Value);
+                    }
+
+                    {
+                        Console.WriteLine("\n   *****   \n");
+                    }
+                }
+            }
+
         }
     }
 }

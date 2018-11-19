@@ -71,7 +71,7 @@ namespace TechJobsConsole
                     else
                         //if the user wants to search individual columns
                     {
-                        searchResults = JobData.FindByColumnAndValue(columnChoice, upperSearchTerm);
+                        searchResults = JobData.FindByColumnAndValue(columnChoice, searchTerm);
                         PrintJobs(searchResults);
                     }              
                    
@@ -124,11 +124,7 @@ namespace TechJobsConsole
         //this will iterate through a list of dictionaries containing the name of the column and the data in each column, for the "list by" portion
         private static void PrintJobs(List<Dictionary<string, string>> someJobs)
         {
-            if (someJobs.Count == 0)
-            { Console.WriteLine("No results found."); }
-            else
-            {
-                for (int i = 0; i < someJobs.Count; i++)
+           for (int i = 0; i < someJobs.Count; i++)
                 {
                     foreach (KeyValuePair<string, string> pair in someJobs[i])
 
@@ -142,7 +138,7 @@ namespace TechJobsConsole
                         Console.WriteLine("\n   *****   \n");
                     }
                 }
-            }
+          
 
         }
     }

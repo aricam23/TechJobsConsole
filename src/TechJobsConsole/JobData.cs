@@ -139,7 +139,7 @@ namespace TechJobsConsole
             return rowValues.ToArray();
         }
 
-        //FindByData uses dictionaries to iterate over job_data, making it possible for the user to search every field
+        //FindByValue uses dictionaries to iterate over job_data, making it possible for the user to search every field
         //It also contains a check for duplicate job listings
         public static List<Dictionary<string, string>> FindbyValue(string searchTerm)
         {

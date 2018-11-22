@@ -100,9 +100,7 @@ namespace TechJobsConsole
                 Console.WriteLine("\n" + choiceHeader + " by:");
 
                 for (int j = 0; j < choiceKeys.Length; j++)
-                {
-                    Console.WriteLine(j + " - " + choices[choiceKeys[j]]);
-                }
+                    NewMethod(choices, choiceKeys, j);
 
                 string input = Console.ReadLine();
                 choiceIdx = int.Parse(input);
@@ -119,6 +117,11 @@ namespace TechJobsConsole
             } while (!isValidChoice);
 
             return choiceKeys[choiceIdx];
+        }
+
+        private static void NewMethod(Dictionary<string, string> choices, string[] choiceKeys, int j)
+        {
+            Console.WriteLine(j + " - " + choices[choiceKeys[j]]);
         }
 
         //this will iterate through a list of dictionaries containing the name of the column and the data in each column, for the "list by" portion

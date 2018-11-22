@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -49,9 +50,14 @@ namespace TechJobsConsole
             {
                 string aValue = row[column];
 
-                if (aValue.Contains(value))
+                if (aValue.ToUpper().Contains(value.ToUpper()))
                 {
                     jobs.Add(row);
+                }
+                else
+                {
+                    Console.WriteLine("Invalid choices. Try again.");
+                    break;
                 }
             }
 
@@ -146,6 +152,7 @@ namespace TechJobsConsole
             LoadData();
 
             List<Dictionary<string, string>> jobSearch = new List<Dictionary<string, string>>();
+            //bool validTest = true;
 
             foreach (Dictionary<string, string> row in AllJobs)
                 foreach (KeyValuePair<string, string> kvp in row)
@@ -157,6 +164,12 @@ namespace TechJobsConsole
                         jobSearch.Add(row);
                         break;
                     }
+                    else
+                    {
+                        Console.WriteLine("Invalid choices. Try again.");
+                        break;
+                    }
+
                 }
             return jobSearch;
         }

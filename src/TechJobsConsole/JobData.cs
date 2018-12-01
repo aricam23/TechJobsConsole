@@ -17,6 +17,8 @@ namespace TechJobsConsole
             return AllJobs;
         }
 
+
+
         /*
          * Returns a list of all values contained in a given column,
          * without duplicates. 
@@ -50,23 +52,47 @@ namespace TechJobsConsole
             {
                 string aValue = row[column];
 
-                if (aValue.ToUpper().Contains(value.ToUpper()))
+                if (aValue.ToLower().Contains(value.ToLower()))
                 {
                     jobs.Add(row);
-                }
-                else
-                {
-                    Console.WriteLine("Invalid choices. Try again.");
-                    break;
                 }
             }
 
             return jobs;
         }
 
+        public static List<Dictionary<string, string>> FindByValue(string value)
+        {
+            // load data, if not already loaded
+            LoadData();
+
+            List<Dictionary<string, string>> jobs = new List<Dictionary<string, string>>();
+
+            value = value.ToLower();
+
+            foreach (Dictionary<string, string> row in AllJobs)
+            {
+                foreach (var KeyValuePair in row)
+                {
+                    if (KeyValuePair.Value.ToLower().Contains(value) && !jobs.Contains(row))
+                    {
+                        jobs.Add(row);
+                        continue;
+                    }
+
+                }
+            }
+
+            return jobs;
+
+        }
+
+
+
         /*
          * Load and parse data from job_data.csv
          */
+
         private static void LoadData()
         {
 
@@ -79,13 +105,14 @@ namespace TechJobsConsole
 
             using (StreamReader reader = File.OpenText("job_data.csv"))
             {
+
                 while (reader.Peek() >= 0)
                 {
                     string line = reader.ReadLine();
-                    string[] rowArrray = CSVRowToStringArray(line);
-                    if (rowArrray.Length > 0)
+                    string[] rowArray = CSVRowToStringArray(line);
+                    if (rowArray.Length > 0)
                     {
-                        rows.Add(rowArrray);
+                        rows.Add(rowArray);
                     }
                 }
             }
@@ -93,7 +120,6 @@ namespace TechJobsConsole
             string[] headers = rows[0];
             rows.Remove(headers);
 
-            // Parse each row array into a more friendly Dictionary
             foreach (string[] row in rows)
             {
                 Dictionary<string, string> rowDict = new Dictionary<string, string>();
@@ -108,16 +134,14 @@ namespace TechJobsConsole
             IsDataLoaded = true;
         }
 
-        /*
-         * Parse a single line of a CSV file into a string array
-         */
+
+
         private static string[] CSVRowToStringArray(string row, char fieldSeparator = ',', char stringSeparator = '\"')
         {
             bool isBetweenQuotes = false;
             StringBuilder valueBuilder = new StringBuilder();
             List<string> rowValues = new List<string>();
 
-            // Loop through the row string one char at a time
             foreach (char c in row.ToCharArray())
             {
                 if ((c == fieldSeparator && !isBetweenQuotes))
@@ -125,6 +149,7 @@ namespace TechJobsConsole
                     rowValues.Add(valueBuilder.ToString());
                     valueBuilder.Clear();
                 }
+
                 else
                 {
                     if (c == stringSeparator)
@@ -138,40 +163,12 @@ namespace TechJobsConsole
                 }
             }
 
-            // Add the final value
+
             rowValues.Add(valueBuilder.ToString());
             valueBuilder.Clear();
 
             return rowValues.ToArray();
         }
-
-        //FindByValue uses dictionaries to iterate over job_data, making it possible for the user to search every field
-        //It also contains a check for duplicate job listings
-        public static List<Dictionary<string, string>> FindbyValue(string searchTerm)
-        {
-            LoadData();
-
-            List<Dictionary<string, string>> jobSearch = new List<Dictionary<string, string>>();
-            //bool validTest = true;
-
-            foreach (Dictionary<string, string> row in AllJobs)
-                foreach (KeyValuePair<string, string> kvp in row)
-                {
-                    string aValue = kvp.Value.ToUpper();
-
-                    if (aValue.Contains(searchTerm))
-                    {
-                        jobSearch.Add(row);
-                        break;
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid choices. Try again.");
-                        break;
-                    }
-
-                }
-            return jobSearch;
-        }
     }
 }
+

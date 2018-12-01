@@ -60,21 +60,19 @@ namespace TechJobsConsole
                     string upperSearchTerm = searchTerm.ToUpper();
                     List<Dictionary<string, string>> searchResults;
 
-
                     // Fetch results
                     if (columnChoice.Equals("all"))
-                        //if the user wants to search in all fields
                     {
-                        searchResults = JobData.FindbyValue(upperSearchTerm);
+                        //Console.WriteLine("Search all fields not yet implemented.");
+
+                        searchResults = JobData.FindByValue(searchTerm);
                         PrintJobs(searchResults);
                     }
                     else
-                        //if the user wants to search individual columns
                     {
                         searchResults = JobData.FindByColumnAndValue(columnChoice, searchTerm);
                         PrintJobs(searchResults);
-                    }              
-                   
+                    }
                 }
             }
         }
@@ -100,7 +98,9 @@ namespace TechJobsConsole
                 Console.WriteLine("\n" + choiceHeader + " by:");
 
                 for (int j = 0; j < choiceKeys.Length; j++)
-                    NewMethod(choices, choiceKeys, j);
+                {
+                    Console.WriteLine(j + " - " + choices[choiceKeys[j]]);
+                }
 
                 string input = Console.ReadLine();
                 choiceIdx = int.Parse(input);
@@ -119,29 +119,27 @@ namespace TechJobsConsole
             return choiceKeys[choiceIdx];
         }
 
-        private static void NewMethod(Dictionary<string, string> choices, string[] choiceKeys, int j)
-        {
-            Console.WriteLine(j + " - " + choices[choiceKeys[j]]);
-        }
 
-        //this will iterate through a list of dictionaries containing the name of the column and the data in each column, for the "list by" portion
         private static void PrintJobs(List<Dictionary<string, string>> someJobs)
         {
-           for (int i = 0; i < someJobs.Count; i++)
+            foreach (var job in someJobs)
+            {
+
+                Console.WriteLine("*******************");
+                Console.WriteLine("");
+
+                foreach (var KeyValuePair in job)
                 {
-                    foreach (KeyValuePair<string, string> pair in someJobs[i])
+                    Console.WriteLine(KeyValuePair.Key + ": " + KeyValuePair.Value);
 
-
-                    {
-
-                        Console.WriteLine("{0}: {1}", pair.Key, pair.Value);
-                    }
-
-                    {
-                        Console.WriteLine("\n   *****   \n");
-                    }
                 }
-          
+                Console.WriteLine("");
+                Console.WriteLine("*******************");
+                Console.WriteLine("");
+                Console.WriteLine("");
+            }
+            Console.WriteLine("");
+            Console.WriteLine(String.Format("Your input yielded {0} results", someJobs.Count));
 
         }
     }
